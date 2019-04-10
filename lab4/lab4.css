@@ -27,3 +27,29 @@ footer {
     background-color: #3A3A3A; 
 
 }
+.list-group-item{
+   background-color: rgba(0,0,0,0);
+   border:none;
+   padding:1.3em;
+}
+.red{
+   font-size: 1.5em;
+   color: red;
+   font-weight: bold;
+}
+.brown{
+   color: goldenrod;
+}
+.justifyHeight *{
+   margin: 0.2em 0;
+}
+.justifyWidth img{
+   margin: 0 0.5em;
+}
+.thumbnail{
+   padding:15px;
+}
+.similarTitle { 
+   font-size:0.95em;
+   font-weight:700; 
+}
