@@ -10,7 +10,7 @@
 
    <!-- Custom styles for this template -->
    <link href="lab5.css" rel="stylesheet">
-
+   
    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
    <!--[if lt IE 9]>
    <script src="bootstrap3_defaultTheme/assets/js/html5shiv.js"></script>
@@ -125,7 +125,8 @@
             <th>Price</th>
             <th>Amount</th>
          </tr>
-
+         <tbody id="tbMain"></tbody>
+         
          <!-- 这是你需要修改的地方 -->
          <!-- 本来是下面这样👇 -->
 
@@ -160,19 +161,19 @@
 
          <tr class="success strong">
             <td colspan="4" class="moveRight">Subtotal</td>
-            <td >$1700</td>
+            <td id="subTotal">$1900</td>
          </tr>
          <tr class="active strong">
             <td colspan="4" class="moveRight">Tax</td>
-            <td>$170</td>
+            <td id="tax">$190</td>
          </tr>  
          <tr class="strong">
             <td colspan="4" class="moveRight">Shipping</td>
-            <td>$100</td>
+            <td id="shipping">$100</td>
          </tr> 
          <tr class="warning strong text-danger">
             <td colspan="4" class="moveRight">Grand Total</td>
-            <td>$1970</td>
+            <td id="grandTotal">$2190</td>
          </tr>    
          <tr >
             <td colspan="4" class="moveRight"><button type="button" class="btn btn-primary" >Continue Shopping</button></td>
@@ -264,7 +265,69 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="bootstrap3_defaultTheme/assets/js/jquery.js"></script>
-    <script src="bootstrap3_defaultTheme/dist/js/bootstrap.min.js"></script>    
+ 
+    <script>
+         var subTotal=0;
+         var tax;
+         var shipping;
+         var grandTotal;
+         var img1=document.createElement("img");
+         img1.src="images/art/tiny/116010.jpg";
+         var img2=document.createElement("img");
+         img2.src="images/art/tiny/113010.jpg";
+         var per=[
+            {picture:img1,product:"Artist Holding a Thistle",quantity:2,price:"$500",amount:1000},
+            {picture:img2,product:"Self-portrait in a Straw Hat",quantity:1,price:"$700",amount:700}
+         ];
+         window.onload =function(){
+            var tbody=document.getElementById('tbMain');
+            for(var i =0;i<per.length;i++){
+               var trow = getDataRow(per[i]);
+               tbody.appendChild(trow);               
+            }
+         }
+         function getDataRow(h){
+            var row=document.createElement('tr');
+   
+            var pictureCell=document.createElement('td');
+            pictureCell.appendChild(h.picture);
+            row.appendChild(pictureCell);
+   
+            var productCell=document.createElement('td');
+            productCell.innerHTML=h.product;
+            row.appendChild(productCell);
+   
+            var quantityCell=document.createElement('td');
+            quantityCell.innerHTML=h.quantity;
+            row.appendChild(quantityCell);
+   
+            var priceCell=document.createElement('td');
+            priceCell.innerHTML=h.price;
+            row.appendChild(priceCell);
+   
+            var amountCell=document.createElement('td');
+            amountCell.innerHTML="$"+h.amount;
+            row.appendChild(amountCell);
+
+            return row;
+         }
+         for(var i=0;i<per.length;i++){
+            subTotal=per[i].amount+subTotal;
+         }
+         if(subTotal<=1000){
+            shipping=40;
+         }else{
+            shipping=0;
+         }
+         tax=subTotal*0.1;
+         grandTotal=subTotal+tax+shipping;
+         document.getElementById("subTotal").innerHTML="$"+subTotal;
+         document.getElementById("tax").innerHTML="$"+tax;
+         document.getElementById("shipping").innerHTML="$"+shipping;
+         document.getElementById("grandTotal").innerHTML="$"+grandTotal;
+      </script>
+          <script src="bootstrap3_defaultTheme/assets/js/jquery.js"></script>
+          <script src="bootstrap3_defaultTheme/dist/js/bootstrap.min.js"></script>   
   </body>
+ 
 </html>
