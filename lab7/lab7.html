@@ -2,7 +2,37 @@
 <head>
 <title>Chapter 10</title>
 <link rel="stylesheet" href="lab7.css">
-<script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("div#thumbBox div img").click(function(){
+        var str1=$(this).attr("src").replace("/small","/medium");
+        var str2=$(this).attr("alt");
+        var str3=$(this).attr("title");
+        var text1=$("<em></em>").text(str2);
+        var text2=$("<div></div>").text(str3);
+        $("figure#imgManipulated img").attr("src",str1);
+        $("figure#imgManipulated figcaption").empty();
+        $("figure#imgManipulated figcaption").append(text1,text2);
+    })
+    $("button#resetFilters").click(function(){
+        $("figure#imgManipulated img").css({"-webkit-filter":"none","filter":"none"});
+    });
+    $(function(){
+        $("#sliderBox form").bind("input propertyChange",function(){
+        var opacity=$("#sliderOpacity").val()/100;
+        var saturation=$("#sliderSaturation").val();
+        var brightness=$("#sliderBrightness").val()/100;
+        var hue=$("#sliderHue").val();
+        var gray=$("#sliderGray").val()/100;
+        var blur=$("#sliderBlur").val();
+        $("figure#imgManipulated img").css({
+        "-webkit-filter":"opacity("+opacity+")"+"saturate("+saturation+")" +"brightness("+brightness+")"+"hue-rotate("+hue+"deg)"+ "grayscale("+gray+")"+"blur("+blur+"px)",
+        "filter":"opacity("+opacity+")" +"saturate("+saturation+")" +"brightness("+brightness+")" +"hue-rotate("+hue+"deg)"+ "grayscale("+gray+")"+"blur("+blur+"px)"
+        });
+        });
+    });
+});
 </script>      
 </head>    
 <body class="tiled">
@@ -18,7 +48,7 @@
            <p><label>Hue Rotate: </label><input type="range" id="sliderHue" min="0" max="360" value="0" class="sliders" /> <span id="numHue">0</span>deg</p>
            <p><label>Grayscale: </label><input type="range" id="sliderGray" min="0" max="100" value="0" class="sliders"/> <span id="numGray">0</span>%</p>
            <p><label>Blur: </label><input type="range" id="sliderBlur" min="0" max="10" value="0" class="sliders" /> <span id="numBlur">0</span>px</p>
-           <p><button id="resetFilters">Reset</button> </p>
+           <p><button id="resetFilters" onclick="">Reset</button> </p>
         </form>    
     </div>
     <figure id="imgManipulated">
