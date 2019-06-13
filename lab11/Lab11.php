@@ -3,7 +3,24 @@
 
 //****** Hint ******
 //connect database and fetch data here
+$conn = new mysqli('localhost:3306','root','','travel');
+$conn->query("set names utf8");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
+$continentsSql = "SELECT * FROM continents;";
+$continentResult = $conn->query($continentsSql);
+$countriesSql = "SELECT * FROM countries;";
+$countriesResult = $conn->query($countriesSql);
+
+$continentFilter = $_GET["continent"];
+$countryFilter = $_GET["country"];
+
+if($continentFilter!=="0") $continentFilter="'".$continentFilter."'";
+if($countryFilter!=="0") $countryFilter="'".$countryFilter."'";
+$imageSql = "SELECT * FROM imagedetails WHERE ContinentCode = $continentFilter AND CountryCodeISO = $countryFilter;";
+$imageResult = $conn->query($imageSql);
 
 ?>
 
@@ -46,11 +63,10 @@
 
                 //****** Hint ******
                 //display the list of continents
-
-                while($row = $result->fetch_assoc()) {
-                  echo '<option value=' . $row['ContinentCode'] . '>' . $row['ContinentName'] . '</option>';
+                while($continentRow = $continentResult->fetch_assoc()) {
+                  echo '<option value=' . $continentRow['ContinentCode'] . '>' . $continentRow['ContinentName'] . '</option>';
                 }
-
+                
                 ?>
               </select>     
               
@@ -61,6 +77,10 @@
 
                 //****** Hint ******
                 /* display list of countries */ 
+               
+                while($countriesRow = $countriesResult->fetch_assoc()) {
+                  echo '<option value=' . $countriesRow['ISO'] . '>' . $countriesRow['CountryName'] . '</option>';
+                }
                 ?>
               </select>    
               <input type="text"  placeholder="Search title" class="form-control" name=title>
@@ -90,6 +110,17 @@
               </a>
             </li>        
             */ 
+            
+            while($imageRow = $imageResult->fetch_assoc()) {
+              echo "<li>";
+              echo "<a href='detail.php?id=".$imageRow["ImageID"]."' class='img-responsive'>";
+              echo "<img src='images/square-medium/".$imageRow["Path"]."' alt='".$imageRow["Title"]."'>";
+              echo "<div class='caption'>";
+              echo "<div class='blur'></div>";
+              echo "<div class='caption-text'>";
+              echo "<p>".$imageRow["Description"]."</p>";
+              echo "</div></div></a></li>";  
+            }
             ?>
        </ul>       
 
